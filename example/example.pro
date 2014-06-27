@@ -39,6 +39,7 @@ macx {
 } else:unix {
     CONFIG += link_pkgconfig
     PKGCONFIG += OGRE
+    LIBS += -lboost_system
 } else:win32 {
     OGREDIR = $$(OGRE_HOME)
     isEmpty(OGREDIR) {
