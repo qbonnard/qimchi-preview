@@ -17,7 +17,7 @@ HEADERS += cameranodeobject.h \
     exampleapp.h
 
 OTHER_FILES += \
-    resources/example.qml
+    resources/application.qml
 
 macx {
     OGREDIR = $$(OGRE_HOME)

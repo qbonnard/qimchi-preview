@@ -1,6 +1,6 @@
 <RCC>
     <qresource prefix="/qml">
-        <file>example.qml</file>
+        <file>application.qml</file>
     </qresource>
     <qresource prefix="/images">
         <file>arrow.png</file>

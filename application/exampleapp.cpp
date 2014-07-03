@@ -87,5 +87,5 @@ void ExampleApp::addContent()
 
     // load the QML scene
     setResizeMode(QQuickView::SizeRootObjectToView);
-    setSource(QUrl("qrc:/qml/example.qml"));
+    setSource(QUrl("qrc:/qml/application.qml"));
 }
