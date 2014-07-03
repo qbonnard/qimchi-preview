@@ -1,9 +1,9 @@
 CONFIG += qt
 QT += qml quick
 TEMPLATE = app
-TARGET = qmlogre
+TARGET = qili
 
-LIBS += -L../lib -lqmlogre
+LIBS += -L../lib -lqili
 
 UI_DIR = ./.ui
 OBJECTS_DIR = ./.obj
