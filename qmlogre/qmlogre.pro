@@ -1,7 +1,7 @@
 CONFIG += qt
 QT += qml quick
 TEMPLATE = lib
-TARGET = qili
+TARGET = qimchi
 
 macx {
     OGREDIR = $$(OGRE_HOME)
