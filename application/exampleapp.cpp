@@ -11,8 +11,8 @@
 
 #include "cameranodeobject.h"
 
-#include "../lib/ogreitem.h"
-#include "../lib/ogreengine.h"
+#include "../qmlogre/ogreitem.h"
+#include "../qmlogre/ogreengine.h"
 
 #include <QCoreApplication>
 #include <QtQml/QQmlContext>

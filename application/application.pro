@@ -3,7 +3,7 @@ QT += qml quick
 TEMPLATE = app
 TARGET = qili
 
-LIBS += -L../lib -lqili
+LIBS += -L../qmlogre -lqili
 
 UI_DIR = ./.ui
 OBJECTS_DIR = ./.obj
