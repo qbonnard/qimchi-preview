@@ -10,6 +10,7 @@
 import QtQuick 2.0
 import Ogre 1.0
 import Example 1.0
+import Chilitags 1.0
 
 Rectangle {
     id: ogre
@@ -22,6 +23,17 @@ Rectangle {
         anchors.fill: parent
         source: "qrc:/images/GrassandSky.png"
         Behavior on opacity { NumberAnimation { } }
+    }
+
+    ChilitagsCamera {
+        id: chilitagsCamera
+        x: 10
+        y: 20
+        width: 160
+        height: 120
+        Component.onCompleted: {
+            chilitagsCamera.start();
+        }
     }
 
     Camera {

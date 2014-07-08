@@ -14,6 +14,8 @@
 #include "../qmlogre/ogreitem.h"
 #include "../qmlogre/ogreengine.h"
 
+#include "../qmlchilitags/chilitagscamera.h"
+
 #include <QCoreApplication>
 #include <QtQml/QQmlContext>
 #include <QDir>
@@ -39,6 +41,7 @@ ExampleApp::ExampleApp(QWindow *parent) :
   , m_root(0)
 {
     qmlRegisterType<CameraNodeObject>("Example", 1, 0, "Camera");
+    qmlRegisterType<ChilitagsCamera>("Chilitags", 1, 0, "ChilitagsCamera");
 
     // start Ogre once we are in the rendering thread (Ogre must live in the rendering thread)
     connect(this, &ExampleApp::beforeRendering, this, &ExampleApp::initializeOgre, Qt::DirectConnection);

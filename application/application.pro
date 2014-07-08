@@ -1,9 +1,10 @@
 CONFIG += qt
-QT += qml quick
+QT += qml quick multimedia
 TEMPLATE = app
 TARGET = application
 
 LIBS += -L../qmlogre -lqmlogre
+LIBS += -L../qmlchilitags -lqmlchilitags
 
 UI_DIR = ./.ui
 OBJECTS_DIR = ./.obj
@@ -12,6 +13,8 @@ MOC_DIR = ./.moc
 SOURCES += main.cpp \
     cameranodeobject.cpp \
     exampleapp.cpp
+
+QMAKE_CXXFLAGS += -std=c++11
 
 HEADERS += cameranodeobject.h \
     exampleapp.h
