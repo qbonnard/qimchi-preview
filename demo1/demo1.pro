@@ -2,6 +2,10 @@ TEMPLATE = app
 
 QT += qml quick
 
+QT += multimedia
+QMAKE_CXXFLAGS += -std=c++11
+LIBS += -L../qmlchilitags -lqmlchilitags
+
 SOURCES += main.cpp
 
 RESOURCES += qml.qrc

@@ -6,7 +6,8 @@ TARGET = qmlchilitags
 HEADERS += \
     myvideosurface.h \
     frameobserver.h \
-    chilitagscamera.h
+    chilitagscamera.h \
+    chilitagsobject.h
 
 SOURCES += \
     myvideosurface.cpp \
