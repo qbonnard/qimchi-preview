@@ -49,6 +49,8 @@ public:
 
     virtual bool updateItem(const QVideoFrame &frame);
 
+    //TODO way to slow
+    //TODO color conversion is wrong
     QVariantMap tags() const {
         QVariantMap tags;
         for (auto tag : m_tags) {

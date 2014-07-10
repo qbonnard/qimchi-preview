@@ -11,10 +11,16 @@ class ChilitagsObject : public QQuickItem
 {
     Q_OBJECT
     Q_PROPERTY(QString name READ name WRITE setName)
+    //TODO we just want a tagUpdate slot actually
+    //TODO find a way to set a default source of tags
     Q_PROPERTY(QVariantMap tags READ tags WRITE tagUpdate)
     Q_PROPERTY(bool visible READ visible NOTIFY visibilityChanged)
     Q_PROPERTY(QMatrix4x4 transform READ transform NOTIFY transformChanged)
+    //TODO can we have the same notify as transformchaged ?
+    //or maybe make an invocable rather than a property
+    //what we really want is to add some methods to QMatrix4x4 though...
     Q_PROPERTY(QTransform translation READ translation NOTIFY translationChanged)
+    //TODO: make translation work
     Q_PROPERTY(float x READ x NOTIFY xChanged)
     Q_PROPERTY(float y READ y NOTIFY yChanged)
 
