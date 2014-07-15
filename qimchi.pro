@@ -1,5 +1,4 @@
 TEMPLATE = subdirs
-SUBDIRS = qmlogre \
+SUBDIRS = \
           qmlchilitags \
-          application \
           demo1
