@@ -1,0 +1,24 @@
+Qimchi
+=======
+
+Qimchi is a QML based framework for CHILI lab's projects in augmented reality and robotics.
+
+Content
+--------
+
+The global QtCreator project references the following modules:
+
+* qmlchilitags: integration of [Chilitags](https://github.com/chili-epfl/chilitags) in QML
+* qmlchilitags-demo: demonstration of how to use qmlchilitags
+* qmlogre: [Markus Weiland's integration of Ogre into QML](https://github.com/advancingu/QmlOgre)
+* qmlogre-demo: Markus Weiland's application demonstrating qmlogre
+
+Documentation
+-------------
+
+Qimchi requires Qt 5, and is developped using Qt Creator.
+For more details, each module contains a specific README.
+
+License
+-------
+Qimchi is licensed under the GPLv3 License
