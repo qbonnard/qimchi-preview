@@ -1,4 +1,4 @@
 TEMPLATE = subdirs
 SUBDIRS = \
           qmlchilitags \
-          demo1
+          qmlchilitags-demo 
