@@ -9,7 +9,8 @@ HEADERS += \
     chilitagsplugin.h \
     chilitagsdetection.h \
     chilitagsobject.h \
-    chilitagssurface.h
+    chilitagssurface.h \
+    projectedorigin.h
 
 SOURCES += \
     chilitagsplugin.cpp \
