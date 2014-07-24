@@ -1,4 +1,4 @@
-#include "chilitagscamera.h"
+#include "chilitagsdetection.h"
 
 #include <QVideoSurfaceFormat>
 
@@ -9,16 +9,16 @@
 //TODO: move conversion to chilitags
 #include <opencv2/imgproc/imgproc.hpp>
 
-ChilitagsCamera::ChilitagsCamera(QObject *parent)
+ChilitagsDetection::ChilitagsDetection(QObject *parent)
       :  QAbstractVideoSurface(parent)
       , m_chilitags()
       , m_videoSurface(0)
     {
     }
 
-ChilitagsCamera::~ChilitagsCamera(){}
+ChilitagsDetection::~ChilitagsDetection(){}
 
-QList<QVideoFrame::PixelFormat> ChilitagsCamera::supportedPixelFormats(
+QList<QVideoFrame::PixelFormat> ChilitagsDetection::supportedPixelFormats(
             QAbstractVideoBuffer::HandleType handleType) const {
     if (handleType == QAbstractVideoBuffer::NoHandle) {
         return QList<QVideoFrame::PixelFormat>()
@@ -30,20 +30,20 @@ QList<QVideoFrame::PixelFormat> ChilitagsCamera::supportedPixelFormats(
     return QList<QVideoFrame::PixelFormat>();
 }
 
-bool ChilitagsCamera::isFormatSupported(const QVideoSurfaceFormat &format) const {
+bool ChilitagsDetection::isFormatSupported(const QVideoSurfaceFormat &format) const {
     if (m_videoSurface) return m_videoSurface->isFormatSupported(format)
             && QAbstractVideoSurface::isFormatSupported(format);
     return QAbstractVideoSurface::isFormatSupported(format);
 }
 
-QVideoSurfaceFormat ChilitagsCamera::nearestFormat(const QVideoSurfaceFormat &) const
+QVideoSurfaceFormat ChilitagsDetection::nearestFormat(const QVideoSurfaceFormat &) const
 {
-    qDebug() << "Not implemented: ChilitagsCamera::nearestFormat";
+    qDebug() << "Not implemented: ChilitagsDetection::nearestFormat";
     return QVideoSurfaceFormat();
 }
 
 
-bool ChilitagsCamera::start(const QVideoSurfaceFormat &format) {
+bool ChilitagsDetection::start(const QVideoSurfaceFormat &format) {
     QVideoSurfaceFormat outputFormat(format.frameSize(),
                                      QVideoFrame::Format_ARGB32);
     //if (m_videoSurface) {
@@ -56,13 +56,13 @@ bool ChilitagsCamera::start(const QVideoSurfaceFormat &format) {
     return QAbstractVideoSurface::start(format);
 }
 
-void ChilitagsCamera::stop() {
+void ChilitagsDetection::stop() {
     if (m_videoSurface) m_videoSurface->stop();
     QAbstractVideoSurface::stop();
 }
 
 
-bool ChilitagsCamera::present(const QVideoFrame &frame) {
+bool ChilitagsDetection::present(const QVideoFrame &frame) {
 
     //qDebug("time: %d", m_timer.elapsed());
     //qDebug("newFrame: %dx%d", frame.width(), frame.height());
@@ -96,7 +96,7 @@ bool ChilitagsCamera::present(const QVideoFrame &frame) {
     return true;
 }
 
-void ChilitagsCamera::setSource(QObject *source) {
+void ChilitagsDetection::setSource(QObject *source) {
     m_timer.start();
     QVariant mediaObjectProperty = source->property("mediaObject");
     QMediaObject *mediaObject =
@@ -110,7 +110,7 @@ void ChilitagsCamera::setSource(QObject *source) {
 }
 
 
-Q_INVOKABLE QStringList ChilitagsCamera::tagIds() const {
+Q_INVOKABLE QStringList ChilitagsDetection::tagIds() const {
     QStringList tagIds;
     for (auto tag : m_tags) {
         tagIds.append(QString::fromStdString(tag.first));
@@ -118,11 +118,11 @@ Q_INVOKABLE QStringList ChilitagsCamera::tagIds() const {
     return tagIds;
 }
 
-Q_INVOKABLE bool ChilitagsCamera::isPresent(QString id) const {
+Q_INVOKABLE bool ChilitagsDetection::isPresent(QString id) const {
     return m_tags.find(id.toStdString()) != m_tags.end();
 }
 
-Q_INVOKABLE QMatrix4x4 ChilitagsCamera::transform(QString id) const {
+Q_INVOKABLE QMatrix4x4 ChilitagsDetection::transform(QString id) const {
     auto it = m_tags.find(id.toStdString());
     if (it == m_tags.end()) return QMatrix4x4();
     float values[16];
@@ -130,7 +130,7 @@ Q_INVOKABLE QMatrix4x4 ChilitagsCamera::transform(QString id) const {
     return QMatrix4x4(values);
 }
 
-QVariantMap ChilitagsCamera::tags() const {
+QVariantMap ChilitagsDetection::tags() const {
     QVariantMap tags;
     for (auto tag : m_tags) {
         QString id = QString::fromStdString(tag.first);

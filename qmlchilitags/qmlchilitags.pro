@@ -7,12 +7,12 @@ TARGET = $$qtLibraryTarget(chilitagsplugin)
 
 HEADERS += \
     chilitagsplugin.h \
-    chilitagscamera.h \
+    chilitagsdetection.h \
     chilitagsobject.h \
 
 SOURCES += \
     chilitagsplugin.cpp \
-    chilitagscamera.cpp \
+    chilitagsdetection.cpp \
 
 LIBS += -lopencv_core -lopencv_imgproc
 LIBS += -lchilitags

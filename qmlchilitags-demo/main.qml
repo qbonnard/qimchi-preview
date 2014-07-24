@@ -12,7 +12,7 @@ Window {
         id: camera
     }
 
-    ChilitagsCamera {
+    ChilitagsDetection {
         id: detection
         source: camera
     }

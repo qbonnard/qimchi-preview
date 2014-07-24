@@ -8,7 +8,7 @@
 
 #include <QTime>
 
-class ChilitagsCamera : public QAbstractVideoSurface
+class ChilitagsDetection : public QAbstractVideoSurface
 {
     Q_OBJECT
     Q_PROPERTY(QObject *source READ getSource WRITE setSource)
@@ -17,8 +17,8 @@ class ChilitagsCamera : public QAbstractVideoSurface
                READ getVideoSurface WRITE setVideoSurface)
 
 public:
-    explicit ChilitagsCamera(QObject *parent = 0);
-    virtual ~ChilitagsCamera();
+    explicit ChilitagsDetection(QObject *parent = 0);
+    virtual ~ChilitagsDetection();
 
     virtual QList<QVideoFrame::PixelFormat> supportedPixelFormats(
                 QAbstractVideoBuffer::HandleType handleType =
