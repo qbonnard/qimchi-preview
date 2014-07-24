@@ -1,39 +1,25 @@
 #ifndef CHILITAGSDETECTION_H
 #define CHILITAGSDETECTION_H
 
-#include <QAbstractVideoSurface>
+#include <QQuickItem>
 
-#include <chilitags/chilitags.hpp>
+#include <chilitagssurface.h>
 #include <QMatrix4x4>
 
-#include <QTime>
-
-class ChilitagsDetection : public QAbstractVideoSurface
+//TODO: we don't need a QQuickItem here, just use
+//Q_CLASSINFO("DefaultProperty", "objects")
+class ChilitagsDetection : public QQuickItem
 {
     Q_OBJECT
     Q_PROPERTY(QObject *source READ getSource WRITE setSource)
+    //TODO: would a QMap<QString,QMatrix> do ?
     Q_PROPERTY(QVariantMap tags READ tags NOTIFY tagsChanged)
     Q_PROPERTY(QAbstractVideoSurface* videoSurface
                READ getVideoSurface WRITE setVideoSurface)
 
 public:
-    explicit ChilitagsDetection(QObject *parent = 0);
+    explicit ChilitagsDetection(QQuickItem *parent = 0);
     virtual ~ChilitagsDetection();
-
-    virtual QList<QVideoFrame::PixelFormat> supportedPixelFormats(
-                QAbstractVideoBuffer::HandleType handleType =
-                    QAbstractVideoBuffer::NoHandle) const;
-
-    virtual bool isFormatSupported(const QVideoSurfaceFormat &format) const ;
-
-    virtual QVideoSurfaceFormat nearestFormat(const QVideoSurfaceFormat &) const ;
-
-
-    virtual bool start(const QVideoSurfaceFormat &format) ;
-
-    virtual void stop() ;
-
-    virtual bool present(const QVideoFrame &frame) ;
 
 
     QObject *getSource() const {  return m_source; }
@@ -42,20 +28,15 @@ public:
 
 
     QAbstractVideoSurface *getVideoSurface() const {
-        return m_videoSurface;
+        return m_surface.getVideoSurface();
     }
     void setVideoSurface(QAbstractVideoSurface *videoSurface) {
-        m_videoSurface = videoSurface;
+        m_surface.setVideoSurface(videoSurface);
     }
 
+    QVariantMap tags() const {return m_tags;}
 
-    Q_INVOKABLE QStringList tagIds() const ;
-
-    Q_INVOKABLE bool isPresent(QString id) const ;
-
-    Q_INVOKABLE QMatrix4x4 transform(QString id) const ;
-
-    QVariantMap tags() const ;
+    void setTags(const std::map<std::string, cv::Matx44d> &tags);
 
 signals:
     void tagsChanged(QVariantMap tags);
@@ -63,14 +44,9 @@ signals:
 public slots:
 
 private:
-    chilitags::Chilitags3D m_chilitags;
-    std::map<std::string, cv::Matx44d> m_tags;
-
     QObject *m_source;
-    cv::Mat m_converted;
-    QAbstractVideoSurface* m_videoSurface;
-
-    QTime m_timer;
+    ChilitagsSurface m_surface;
+    QVariantMap m_tags;
 };
 
 #endif // CHILITAGSDETECTION_H

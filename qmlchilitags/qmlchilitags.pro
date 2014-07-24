@@ -9,10 +9,12 @@ HEADERS += \
     chilitagsplugin.h \
     chilitagsdetection.h \
     chilitagsobject.h \
+    chilitagssurface.h
 
 SOURCES += \
     chilitagsplugin.cpp \
     chilitagsdetection.cpp \
+    chilitagssurface.cpp
 
 LIBS += -lopencv_core -lopencv_imgproc
 LIBS += -lchilitags

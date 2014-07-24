@@ -4,16 +4,13 @@
 #include <QQuickItem>
 #include <QTransform>
 
-#include <chilitags/chilitags.hpp>
+#include <chilitagsdetection.h>
 #include <QMatrix4x4>
 
 class ChilitagsObject : public QQuickItem
 {
     Q_OBJECT
     Q_PROPERTY(QString name READ name WRITE setName)
-    //TODO we just want a tagUpdate slot actually
-    //TODO find a way to set a default source of tags
-    Q_PROPERTY(QVariantMap tags READ tags WRITE tagUpdate)
     Q_PROPERTY(bool visible READ visible NOTIFY visibilityChanged)
     Q_PROPERTY(QMatrix4x4 transform READ transform NOTIFY transformChanged)
     //TODO can we have the same notify as transformchaged ?
@@ -28,12 +25,29 @@ public:
     explicit ChilitagsObject(QQuickItem *parent = 0)
         : QQuickItem(parent)
     {
+        connect(this, &QQuickItem::parentChanged,
+                this, &ChilitagsObject::changeParent);
     }
 
     QString name() const {return m_name;}
     void setName(const QString &name) {m_name = name;}
 
-    const QVariantMap & tags() const {return m_tags;}
+    bool visible() const {return m_visible;}
+    QMatrix4x4 transform() const {return m_transform;}
+
+    QTransform translation() const { return m_translation;}
+    float x() const { return m_x;}
+    float y() const { return m_y;}
+
+signals:
+    void visibilityChanged(bool visible);
+    void transformChanged(QMatrix4x4 transform);
+
+    void translationChanged(QTransform translation);
+    void xChanged(float x);
+    void yChanged(float y);
+
+public slots:
     void tagUpdate(const QVariantMap & tags) {
         m_tags = tags;
         auto tagIt = tags.find(m_name);
@@ -53,20 +67,12 @@ public:
         }
     }
 
-    bool visible() const {return m_visible;}
-    QMatrix4x4 transform() const {return m_transform;}
-    QTransform translation() const { return m_translation;}
-    float x() const { return m_x;}
-    float y() const { return m_y;}
+    void changeParent(QQuickItem *parent) {
+        //FIXME: we probably need to disconnect the previous parent, don't we ?
+        connect((ChilitagsDetection *) parent, &ChilitagsDetection::tagsChanged,
+                this, &ChilitagsObject::tagUpdate);
+    }
 
-signals:
-    void visibilityChanged(bool visible);
-    void transformChanged(QMatrix4x4 transform);
-    void translationChanged(QTransform translation);
-    void xChanged(float x);
-    void yChanged(float y);
-
-public slots:
 
 private:
     QString m_name;

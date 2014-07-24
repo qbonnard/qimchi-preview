@@ -15,30 +15,20 @@ Window {
     ChilitagsDetection {
         id: detection
         source: camera
-    }
 
-    ChilitagsObject {
-        id: first
-        tags: detection.tags
-        name: "tag_84"
-    }
+        ChilitagsObject {
+            id: first
+            name: "tag_84"
+        }
 
-    ChilitagsObject {
-        id: second
-        tags: detection.tags
-        name: "tag_64"
+        ChilitagsObject {
+            id: second
+            name: "tag_64"
+        }
     }
 
     Image {
         id: firstimg
-        source: "qrc:/qt-logo.png"
-        mirror: !second.visible
-        x: second.x
-        y: second.y
-    }
-
-    Image {
-        id: secondimg
         source: "qrc:/qt-logo.png"
         mirror: !first.visible
         x: first.x
@@ -47,6 +37,14 @@ Window {
         //    x:300
         //    y:300
         //}
+    }
+
+    Image {
+        id: secondimg
+        source: "qrc:/qt-logo.png"
+        mirror: !second.visible
+        x: second.x
+        y: second.y
     }
 
     Rectangle {
