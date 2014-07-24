@@ -1,89 +1,76 @@
-#ifndef MYVIDEOOUTPUT_H
-#define MYVIDEOOUTPUT_H
+#ifndef CHILITAGSDETECTION_H
+#define CHILITAGSDETECTION_H
 
-#include <QQuickPaintedItem>
-#include <QCamera>
-class MyVideoSurface;
-#include "frameobserver.h"
+#include <QAbstractVideoSurface>
 
 #include <chilitags/chilitags.hpp>
 #include <QMatrix4x4>
 
-class ChilitagsCamera : public QQuickPaintedItem, public FrameObserver
+#include <QTime>
+
+class ChilitagsCamera : public QAbstractVideoSurface
 {
     Q_OBJECT
-    Q_PROPERTY(QString name READ name WRITE setName)
-    Q_PROPERTY(QSize frameSize READ frameSize NOTIFY frameSizeChanged)
+    Q_PROPERTY(QObject *source READ getSource WRITE setSource)
     Q_PROPERTY(QVariantMap tags READ tags NOTIFY tagsChanged)
+    Q_PROPERTY(QAbstractVideoSurface* videoSurface
+               READ getVideoSurface WRITE setVideoSurface)
 
 public:
-    explicit ChilitagsCamera(QQuickItem *parent = 0);
-    ~ChilitagsCamera();
+    explicit ChilitagsCamera(QObject *parent = 0);
+    virtual ~ChilitagsCamera();
 
-    QString name() const {return m_name;}
-    void setName(const QString &name) {m_name = name;}
+    virtual QList<QVideoFrame::PixelFormat> supportedPixelFormats(
+                QAbstractVideoBuffer::HandleType handleType =
+                    QAbstractVideoBuffer::NoHandle) const;
 
-    Q_INVOKABLE QStringList tagIds() const {
-        QStringList tagIds;
-        for (auto tag : m_tags) {
-            tagIds.append(QString::fromStdString(tag.first));
-        }
-        return tagIds;
+    virtual bool isFormatSupported(const QVideoSurfaceFormat &format) const ;
+
+    virtual QVideoSurfaceFormat nearestFormat(const QVideoSurfaceFormat &) const ;
+
+
+    virtual bool start(const QVideoSurfaceFormat &format) ;
+
+    virtual void stop() ;
+
+    virtual bool present(const QVideoFrame &frame) ;
+
+
+    QObject *getSource() const {  return m_source; }
+
+    void setSource(QObject *source);
+
+
+    QAbstractVideoSurface *getVideoSurface() const {
+        return m_videoSurface;
+    }
+    void setVideoSurface(QAbstractVideoSurface *videoSurface) {
+        m_videoSurface = videoSurface;
     }
 
-    Q_INVOKABLE bool isPresent(QString id) const {
-        return m_tags.find(id.toStdString()) != m_tags.end();
-    }
 
-    Q_INVOKABLE QMatrix4x4 transform(QString id) const {
-        auto it = m_tags.find(id.toStdString());
-        if (it == m_tags.end()) return QMatrix4x4();
-        float values[16];
-        for (int i = 0; i<16; ++i) values[i] = it->second.val[i];
-        return QMatrix4x4(values);
-    }
+    Q_INVOKABLE QStringList tagIds() const ;
 
-    QSize frameSize() const {return m_frameSize;}
+    Q_INVOKABLE bool isPresent(QString id) const ;
 
-    void paint(QPainter *painter);
+    Q_INVOKABLE QMatrix4x4 transform(QString id) const ;
 
-    virtual bool updateItem(const QVideoFrame &frame);
-
-    //TODO way to slow
-    //TODO color conversion is wrong
-    QVariantMap tags() const {
-        QVariantMap tags;
-        for (auto tag : m_tags) {
-            QString id = QString::fromStdString(tag.first);
-            tags.insert(id, transform(id));
-        }
-        return tags;
-    }
+    QVariantMap tags() const ;
 
 signals:
-    void frameSizeChanged();
-    void inputUpdate();
     void tagsChanged(QVariantMap tags);
 
 public slots:
-    void start();
 
 private:
-    void freeResources();
-
-    QString m_name;
-
-    QCamera *m_camera;
-    MyVideoSurface *m_myVideoSurface;
-
-    cv::Mat m_gray, m_rgb;
     chilitags::Chilitags3D m_chilitags;
     std::map<std::string, cv::Matx44d> m_tags;
 
-    QVideoFrame m_frame;
-    QImage m_targetImage;
-    QRect m_imageRect;
-    QSize m_frameSize;
+    QObject *m_source;
+    cv::Mat m_converted;
+    QAbstractVideoSurface* m_videoSurface;
+
+    QTime m_timer;
 };
 
-#endif // MYVIDEOOUTPUT_H
+#endif // CHILITAGSDETECTION_H

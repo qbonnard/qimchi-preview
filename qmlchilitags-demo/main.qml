@@ -1,30 +1,31 @@
 import QtQuick 2.2
 import QtQuick.Window 2.1
 import Chilitags 1.0
+import QtMultimedia 5.0
 
 Window {
     visible: true
     width: 360
     height: 360
 
+    Camera {
+        id: camera
+    }
+
     ChilitagsCamera {
-        id: chilitagsCamera
-        anchors.fill: parent
-        visible: false
-        Component.onCompleted: {
-            chilitagsCamera.start();
-        }
+        id: detection
+        source: camera
     }
 
     ChilitagsObject {
         id: first
-        tags: chilitagsCamera.tags
+        tags: detection.tags
         name: "tag_84"
     }
 
     ChilitagsObject {
         id: second
-        tags: chilitagsCamera.tags
+        tags: detection.tags
         name: "tag_64"
     }
 
@@ -62,14 +63,58 @@ Window {
     }
 
     Text {
-        text: line.rotation.toString()
+        text: JSON.stringify(detection.tags)
         anchors.centerIn: parent
     }
 
-    MouseArea {
-        anchors.fill: parent
-        onClicked: {
-            Qt.quit();
+    VideoOutput {
+        id: feedback
+        anchors.bottom: parent.bottom
+        anchors.right: parent.right
+        width: 160
+        height: 120
+        source: detection
+    }
+
+    Text {
+        id:startButton
+        text: "start"
+        anchors.margins: 10
+        anchors.left: parent.left
+        anchors.top: parent.top
+
+        MouseArea {
+            anchors.fill: parent
+            onClicked: camera.start()
+
         }
     }
+
+    Text {
+        id:stopButton
+        text: "stop"
+        anchors.margins: 10
+        anchors.left: startButton.right
+        anchors.top: parent.top
+
+        MouseArea {
+            anchors.fill: parent
+            onClicked: camera.stop()
+        }
+    }
+
+
+    Text {
+        id:quitButton
+        text: "quit"
+        anchors.margins: 10
+        anchors.left: stopButton.right
+        anchors.top: parent.top
+
+        MouseArea {
+            anchors.fill: parent
+            onClicked: Qt.quit()
+        }
+    }
+
 }

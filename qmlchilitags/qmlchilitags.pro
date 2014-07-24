@@ -7,14 +7,11 @@ TARGET = $$qtLibraryTarget(chilitagsplugin)
 
 HEADERS += \
     chilitagsplugin.h \
-    myvideosurface.h \
-    frameobserver.h \
     chilitagscamera.h \
     chilitagsobject.h \
 
 SOURCES += \
     chilitagsplugin.cpp \
-    myvideosurface.cpp \
     chilitagscamera.cpp \
 
 LIBS += -lopencv_core -lopencv_imgproc
