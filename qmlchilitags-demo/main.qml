@@ -8,107 +8,130 @@ Window {
     width: 360
     height: 360
 
-    Camera {
-        id: camera
-    }
+    Camera { id: camera }
 
     ChilitagsDetection {
         id: detection
         source: camera
 
-        ChilitagsObject {
-            id: first
-            name: "tag_84"
-        }
+        property vector3d tagCenter : Qt.vector3d(10,10,0)
 
         ChilitagsObject {
-            id: second
-            name: "tag_64"
+            id: redTag
+            name: "tag_4"
+            property vector3d center : transform.times(parent.tagCenter)
+        }
+        ChilitagsObject {
+            id: blueTag
+            name: "tag_5"
+            property vector3d center : transform.times(parent.tagCenter)
         }
     }
 
-    Image {
-        id: firstimg
-        source: "qrc:/qt-logo.png"
-        mirror: !first.visible
-        x: first.x
-        y: first.y
-        //transform: Translate {
-        //    x:300
-        //    y:300
-        //}
-    }
+    Item {
+        y:20
+        transform: Scale {xScale: .5; yScale:.5}
 
-    Image {
-        id: secondimg
-        source: "qrc:/qt-logo.png"
-        mirror: !second.visible
-        x: second.x
-        y: second.y
+        VideoOutput {
+            anchors.top: parent.top
+            anchors.left: parent.left
+            source: detection
+        }
+
+        Item {
+            transform: Transform { matrix: detection.projectionMatrix }
+            Item {
+                transform: Transform { matrix: redTag.transform }
+                Rectangle {
+                    color: "blue"
+                    width: 20; height: 20
+                    visible: redTag.visible
+                }
+                Image {
+                    source: "qrc:/qt-logo.png";
+                    width: 20; height: 20
+                    visible: redTag.visible
+                }
+            }
+
+            Item {
+                transform: Transform { matrix: blueTag.transform }
+                Rectangle {
+                    color: "red"
+                    width: 20; height: 20
+                    visible: blueTag.visible
+                }
+                Image {
+                    source: "qrc:/qt-logo.png";
+                    width: 20; height: 20
+                    visible: blueTag.visible
+                }
+            }
+
+
+        }
+
+        Rectangle {
+            property vector3d start :  detection.projectionMatrix.times(redTag.center)
+            property vector3d end :  detection.projectionMatrix.times(blueTag.center)
+            id: line
+            color: "magenta"
+            x: start.x
+            y: start.y
+            height: 1
+            width: Math.sqrt(
+                       (end.y-start.y)*(end.y-start.y) +
+                       (end.x-start.x)*(end.x-start.x) )
+            rotation: Math.atan2(end.y-start.y, end.x-start.x)*180.0/Math.PI;
+            transformOrigin: Item.TopLeft
+        }
     }
 
     Rectangle {
-        id: line
-        color: "red"
-        x: Math.min(first.x, second.x)
-        y: Math.min(first.y, second.y)
-        height: 1
-        width: Math.sqrt(
-                   (second.y-first.y)*(second.y-first.y) +
-                   (second.x-first.x)*(second.x-first.x) )
-        rotation: Math.atan2(first.y-second.y, first.x-second.x)*180.0/Math.PI;
-        transformOrigin: Item.TopLeft
-    }
-
-    Text {
-        text: JSON.stringify(detection.tags)
-        anchors.centerIn: parent
-    }
-
-    VideoOutput {
-        id: feedback
-        anchors.bottom: parent.bottom
-        anchors.right: parent.right
-        width: 160
-        height: 120
-        source: detection
-    }
-
-    Text {
+        color: "#ffffff"
         id:startButton
-        text: "start"
-        anchors.margins: 10
+        width: 50
+        height: 20
         anchors.left: parent.left
         anchors.top: parent.top
-
+        Text {
+            text: "start"
+            anchors.centerIn: parent
+        }
         MouseArea {
             anchors.fill: parent
             onClicked: camera.start()
-
         }
     }
 
-    Text {
+    Rectangle {
+        color: "#ffffff"
         id:stopButton
-        text: "stop"
-        anchors.margins: 10
+        width: 50
+        height: 20
         anchors.left: startButton.right
-        anchors.top: parent.top
-
+        anchors.top: startButton.top
+        Text {
+            text: "stop"
+            anchors.centerIn: parent
+        }
         MouseArea {
             anchors.fill: parent
             onClicked: camera.stop()
         }
     }
 
-
-    Text {
+    Rectangle {
+        color: "#ffffff"
         id:quitButton
-        text: "quit"
-        anchors.margins: 10
+        width: 50
+        height: 20
         anchors.left: stopButton.right
-        anchors.top: parent.top
-
+        anchors.top: stopButton.top
+        Text {
+            text: "quit"
+            anchors.centerIn: parent
+        }
         MouseArea {
             anchors.fill: parent
             onClicked: Qt.quit()

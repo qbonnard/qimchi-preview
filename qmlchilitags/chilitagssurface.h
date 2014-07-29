@@ -5,7 +5,9 @@
 
 class ChilitagsDetection;
 #include <chilitags/chilitags.hpp>
-#include <QTime>
+
+//TODO expose framerate as a property
+//#include <QTime>
 
 class ChilitagsSurface : public QAbstractVideoSurface
 {
@@ -35,6 +37,9 @@ public:
         m_videoSurface = videoSurface;
     }
 
+    chilitags::Chilitags3D &getChilitags() { return m_chilitags; }
+    const chilitags::Chilitags3D &getChilitags() const { return m_chilitags; }
+
 signals:
 
 public slots:
@@ -48,7 +53,7 @@ private:
     cv::Mat m_converted;
     QAbstractVideoSurface* m_videoSurface;
 
-    QTime m_timer;
+    //QTime m_timer;
 };
 
 #endif // CHILITAGSSURFACE_H

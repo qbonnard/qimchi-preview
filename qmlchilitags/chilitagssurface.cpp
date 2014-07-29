@@ -15,9 +15,9 @@ ChilitagsSurface::ChilitagsSurface(QObject *parent)
     , m_tags()
     , m_converted()
     , m_videoSurface(0)
-    , m_timer()
+    //, m_timer()
 {
-    m_timer.start();
+    //m_timer.start();
 }
 
 QList<QVideoFrame::PixelFormat> ChilitagsSurface::supportedPixelFormats(
@@ -68,7 +68,7 @@ bool ChilitagsSurface::present(const QVideoFrame &frame) {
 
     //qDebug("time: %d", m_timer.elapsed());
     //qDebug("newFrame: %dx%d", frame.width(), frame.height());
-    m_timer.restart();
+    //m_timer.restart();
 
     QVideoFrame copy = frame;
     //if (m_frame.pixelFormat() == QVideoFrame::Format_UYVY) {

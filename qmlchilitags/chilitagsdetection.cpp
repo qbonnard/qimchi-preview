@@ -35,3 +35,16 @@ void ChilitagsDetection::setTags(const std::map<std::string, cv::Matx44d> &tags)
     }
     emit tagsChanged(m_tags);
 }
+
+QMatrix4x4 ChilitagsDetection::projectionMatrix() const {
+    cv::Mat mat = m_surface.getChilitags().getCameraMatrix();
+    QMatrix4x4 projectionMatrix;
+
+    projectionMatrix.fill(0);
+    for (int i = 0; i<3; ++i)
+        for (int j = 0; j<3; ++j)
+            projectionMatrix(i,j) = mat.at<double>(i,j);
+    projectionMatrix(3,2) = 1;
+
+    return projectionMatrix;
+ }
