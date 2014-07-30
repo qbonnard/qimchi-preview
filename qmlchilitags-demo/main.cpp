@@ -8,7 +8,11 @@ int main(int argc, char *argv[])
     QQmlApplicationEngine engine;
 
     // Specify where to look for compiled Qimchi plugins
+#ifdef Q_OS_ANDROID
+    engine.addImportPath("assets:/imports");
+#else
     engine.addImportPath("../imports");
+#endif
 
     engine.load(QUrl(QStringLiteral("qrc:///main.qml")));
 
